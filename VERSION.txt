@@ -1,0 +1,6 @@
+Emam's Calculator Suite
+Version 1.0.0 - Initial release with basic calculators
+Version 1.1.0 - Fixed admin panel access and user profile design
+Version 1.2.0 - Fixed scientific calculator and BMI calculator issues
+Version 1.3.0 - Fixed change password validation and admin panel design
+Version 1.4.0 - Fixed calculation history height/width and other minor issues
