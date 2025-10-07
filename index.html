@@ -1,0 +1,5211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emam's Calculator Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --light: #f8f9ff;
+            --dark: #2c2c54;
+            --text: #1e272e;
+            --error: #e55039;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --info: #74b9ff;
+            --card-bg: rgba(255, 255, 255, 0.96);
+            --border: rgba(255,255,255,0.6);
+            --shadow: rgba(0, 0, 0, 0.12);
+            --calc-btn: #e0e0e0;
+            --calc-btn-hover: #d0d0d0;
+            --calc-operator: #f59e0b;
+            --calc-operator-hover: #d97706;
+            --calc-function: #3b82f6;
+            --calc-function-hover: #2563eb;
+            --calc-equals: #10b981;
+            --calc-equals-hover: #059669;
+            --calc-clear: #ef4444;
+            --calc-clear-hover: #dc2626;
+            --calc-memory: #8b5cf6;
+            --calc-memory-hover: #7c3aed;
+        }
+
+        [data-theme="dark"] {
+            --card-bg: rgba(30, 30, 50, 0.9);
+            --light: #2d3436;
+            --dark: #dfe6e9;
+            --text: #dfe6e9;
+            --border: rgba(255,255,255,0.1);
+            --shadow: rgba(0, 0, 0, 0.3);
+            --calc-btn: #4a5568;
+            --calc-btn-hover: #2d3748;
+            --calc-operator: #d97706;
+            --calc-operator-hover: #b45309;
+            --calc-function: #3b82f6;
+            --calc-function-hover: #1d4ed8;
+            --calc-equals: #10b981;
+            --calc-equals-hover: #047857;
+            --calc-clear: #ef4444;
+            --calc-clear-hover: #b91c1c;
+            --calc-memory: #8b5cf6;
+            --calc-memory-hover: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            color: var(--text);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 17s;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 12s;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(3) {
+            left: 70%;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 10s;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 11s;
+            animation-delay: 0s;
+        }
+
+        .particle:nth-child(5) {
+            left: 65%;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 14s;
+            animation-delay: 3s;
+        }
+
+        .particle:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 16s;
+            animation-delay: 1s;
+        }
+
+        .particle:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 13s;
+            animation-delay: 5s;
+        }
+
+        .particle:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 15s;
+            animation-delay: 2s;
+        }
+
+        .particle:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 12s;
+            animation-delay: 4s;
+        }
+
+        .particle:nth-child(10) {
+            left: 85%;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation-duration: 18s;
+            animation-delay: 0s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        /* Header with Theme Toggle */
+        .header {
+            position: absolute;
+            top: 25px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 25px;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 22px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .user-menu {
+            position: relative;
+            display: none;
+        }
+
+        .user-btn {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .user-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            overflow: hidden;
+            min-width: 180px;
+            display: none;
+            z-index: 100;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown a:hover {
+            background: var(--light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 40px var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px var(--shadow);
+        }
+
+        /* Card Slide Animation - FIXED */
+        .card-container {
+            width: 100%;
+            max-width: 550px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-slider {
+            display: flex;
+            width: 200%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .card-slider.slide-right {
+            transform: translateX(-50%);
+        }
+
+        .card-front, .card-back {
+            width: 50%;
+            height: 100%;
+            overflow-y: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 40px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .slide-toggle {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .slide-toggle:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #747d8c;
+            margin-bottom: 35px;
+        }
+
+        /* Floating Label Input */
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-label {
+            position: absolute;
+            left: 12px;
+            top: 14px;
+            color: #747d8c;
+            font-size: 16px;
+            font-weight: 500;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus ~ .form-label,
+        .form-input:not(:placeholder-shown) ~ .form-label {
+            top: -10px;
+            left: 8px;
+            font-size: 12px;
+            color: var(--primary);
+            background: var(--card-bg);
+            padding: 0 5px;
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            height: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength.weak {
+            background: var(--error);
+            width: 33%;
+        }
+
+        .password-strength.medium {
+            background: var(--warning);
+            width: 66%;
+        }
+
+        .password-strength.strong {
+            background: var(--success);
+            width: 100%;
+        }
+
+        .password-strength-text {
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: left;
+        }
+
+        /* Phone Number Input with Country Code */
+        .phone-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .country-code-select {
+            width: 120px;
+            padding: 14px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .country-code-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .phone-number {
+            flex: 1;
+        }
+
+        /* Gender Selection */
+        .gender-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .gender-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .gender-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .gender-label {
+            display: block;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gender-option input[type="radio"]:checked + .gender-label {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Terms and Conditions */
+        .terms-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .terms-checkbox {
+            margin-top: 3px;
+        }
+
+        .terms-label {
+            font-size: 14px;
+            color: #747d8c;
+            text-align: left;
+        }
+
+        .terms-label a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .terms-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* Remember Me & Forgot Password */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        /* Enhanced Buttons */
+        button {
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover:before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .secondary-btn {
+            background: var(--light);
+            color: var(--text);
+            border: 2px solid var(--primary);
+        }
+
+        .secondary-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Enhanced Back to Dashboard Button */
+        .back-to-dashboard {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-top: 20px;
+        }
+
+        .back-to-dashboard:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .back-to-dashboard:hover:before {
+            left: 100%;
+        }
+
+        .back-to-dashboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .back-to-dashboard i {
+            transition: transform 0.3s ease;
+        }
+
+        .back-to-dashboard:hover i {
+            transform: translateX(-5px);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notification Toast - FIXED */
+        .notification {
+            position: fixed;
+            top: -100px;
+            left: 20px;
+            transform: translateY(0);
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+        .notification.show {
+            transform: translateY(120px);
+            opacity: 1;
+        }
+
+        .notification.error {
+            border-left: 5px solid var(--error);
+        }
+
+        .notification.success {
+            border-left: 5px solid var(--success);
+        }
+
+        .notification.warning {
+            border-left: 5px solid var(--warning);
+        }
+
+        .notification.info {
+            border-left: 5px solid var(--info);
+        }
+
+        /* Error Message */
+        .error {
+            color: var(--error);
+            font-weight: 600;
+            margin: 15px 0;
+            font-size: 16px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Success Animation */
+        .success-animation {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-animation.show {
+            display: flex;
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 2;
+            stroke: var(--success);
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px var(--success);
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position: relative;
+        }
+
+        .success-checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 2;
+            stroke-miterlimit: 10;
+            stroke: var(--success);
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .success-checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes scale {
+            0%, 100% {
+                transform: none;
+            }
+            50% {
+                transform: scale3d(1.1, 1.1, 1);
+            }
+        }
+
+        @keyframes fill {
+            100% {
+                box-shadow: inset 0px 0px 0px 30px var(--success);
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-overlay.show {
+            display: flex;
+        }
+
+        .loading-container {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 15px;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 18px;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            margin: 15px auto 0;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: white;
+            border-radius: 2px;
+            width: 0;
+            animation: progress 2s ease-in-out forwards;
+        }
+
+        @keyframes progress {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .dashboard-card {
+            background: var(--light);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .dashboard-card:hover:before {
+            opacity: 0.1;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard-card p {
+            font-size: 14px;
+            color: #747d8c;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scientific Calculator */
+        .calc-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .calc-display {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: 600;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .calc-expression {
+            font-size: 16px;
+            color: #747d8c;
+            margin-bottom: 5px;
+            min-height: 20px;
+        }
+
+        .calc-result {
+            font-size: 28px;
+            color: var(--text);
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            background: var(--calc-btn);
+            border: none;
+            border-radius: 8px;
+            padding: 15px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text);
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-btn:hover {
+            background: var(--calc-btn-hover);
+            transform: translateY(-2px);
+        }
+
+        .calc-btn.operator {
+            background: var(--calc-operator);
+            color: white;
+        }
+
+        .calc-btn.operator:hover {
+            background: var(--calc-operator-hover);
+        }
+
+        .calc-btn.equals {
+            background: var(--calc-equals);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.equals:hover {
+            background: var(--calc-equals-hover);
+        }
+
+        .calc-btn.clear {
+            background: var(--calc-clear);
+            color: white;
+        }
+
+        .calc-btn.clear:hover {
+            background: var(--calc-clear-hover);
+        }
+
+        .calc-btn.function {
+            background: var(--calc-function);
+            color: white;
+        }
+
+        .calc-btn.function:hover {
+            background: var(--calc-function-hover);
+        }
+
+        .calc-btn.memory {
+            background: var(--calc-memory);
+            color: white;
+        }
+
+        .calc-btn.memory:hover {
+            background: var(--calc-memory-hover);
+        }
+
+        .calc-btn.zero {
+            grid-column: span 2;
+        }
+
+        /* Calculator History - HIDDEN */
+        .calc-history {
+            display: none;
+        }
+
+        /* Enhanced Unit Converter */
+        .converter-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .converter-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .converter-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .converter-icon i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .converter-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .converter-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .converter-input {
+            flex: 1;
+            position: relative;
+        }
+
+        .converter-input input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .converter-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .converter-select {
+            flex: 1;
+        }
+
+        .converter-select select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .converter-select select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .converter-arrow {
+            color: var(--primary);
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .converter-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .converter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Enhanced BMI Calculator */
+        .bmi-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .bmi-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .bmi-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .bmi-icon i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .bmi-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .bmi-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bmi-input-group {
+            position: relative;
+        }
+
+        .bmi-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .bmi-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .bmi-input-label {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            color: #747d8c;
+            font-size: 16px;
+            font-weight: 500;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .bmi-input:focus ~ .bmi-input-label,
+        .bmi-input:not(:placeholder-shown) ~ .bmi-input-label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            color: var(--primary);
+            background: var(--card-bg);
+            padding: 0 5px;
+        }
+
+        .bmi-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bmi-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .bmi-result {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .bmi-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .bmi-category {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bmi-description {
+            font-size: 14px;
+            color: #747d8c;
+        }
+
+        .bmi-recommendation {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .bmi-ideal-range {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--success);
+            margin-bottom: 5px;
+        }
+
+        .bmi-weight-recommendation {
+            font-size: 14px;
+            color: #747d8c;
+        }
+
+        /* Percentage Calculator */
+        .percentage-result {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .percentage-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .percentage-formula {
+            font-size: 14px;
+            color: #747d8c;
+            margin-top: 10px;
+        }
+
+        /* Age Calculator Result */
+        .age-result-container {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 25px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .age-result-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+        }
+
+        .age-result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .age-result-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .age-result-copy {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .age-result-copy:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .age-result-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .age-result-item {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .age-result-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .age-result-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .age-result-details {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .age-result-details-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .age-result-details-content {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .birthday-countdown {
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .birthday-countdown-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .birthday-countdown-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* Date Picker */
+        .date-picker {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .date-input {
+            width: 100%;
+            padding: 14px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        /* User Control Form */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .form-actions button {
+            flex: 1;
+        }
+
+        /* Date Controls */
+        .date-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .date-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .date-btn {
+            background: var(--light);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text);
+            transition: all 0.3s ease;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .date-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 25px 0 20px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+        }
+
+        /* History Section */
+        .history-section {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title {
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clear-history {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .clear-history:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 10px;
+            background: var(--light);
+            padding: 10px;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .history-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-type {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .history-content {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+        }
+
+        .history-time {
+            font-size: 12px;
+            color: #747d8c;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 20px;
+            color: #747d8c;
+            font-style: italic;
+        }
+
+        /* Footer - Fixed */
+        .footer {
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Admin Panel Styles */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .admin-table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .admin-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--text);
+            position: sticky;
+            top: 0;
+        }
+
+        .admin-table tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .status-badge.inactive {
+            background: rgba(229, 80, 57, 0.1);
+            color: var(--error);
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            color: var(--secondary);
+        }
+
+        .action-btn.delete {
+            color: var(--error);
+        }
+
+        .action-btn.delete:hover {
+            color: #c0392b;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--light);
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            background: var(--light);
+            color: var(--text);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* User Profile - Enhanced Design */
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar {
+            position: relative;
+        }
+
+        .avatar-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .avatar-status {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+
+        .profile-basic-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .profile-email {
+            font-size: 16px;
+            color: #747d8c;
+            margin-bottom: 10px;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-active {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detail-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .detail-label {
+            font-size: 14px;
+            color: #747d8c;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .profile-action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .profile-action-btn.secondary {
+            background: var(--light);
+            color: var(--text);
+            border: 2px solid var(--primary);
+        }
+
+        .profile-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Enhanced Settings Page */
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .settings-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .settings-icon i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .settings-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .settings-description {
+            font-size: 14px;
+            color: #747d8c;
+            margin-top: 5px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .settings-select {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--light);
+            transition: all 0.3s ease;
+            width: 150px;
+        }
+
+        .settings-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .settings-button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .settings-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-table {
+                font-size: 14px;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 8px 10px;
+            }
+            
+            .search-filter {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+    </div>
+
+    <!-- Header with Theme Toggle -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-calculator"></i>
+            <span>Emam's Calculator Suite</span>
+        </div>
+        <div class="header-controls">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="user-menu" id="userMenu">
+                <button class="user-btn" id="userBtn">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" id="profileLink"><i class="fas fa-user"></i> Profile</a>
+                    <a href="#" id="adminPanelLink" style="display:none;"><i class="fas fa-cogs"></i> Admin Panel</a>
+                    <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+                    <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Login/Register Card Container -->
+            <div class="card-container" id="authContainer">
+                <div class="card-slider" id="cardSlider">
+                    <!-- Login Card -->
+                    <div class="card-front">
+                        <h1>Welcome Back</h1>
+                        <h2>Login to your account</h2>
+                        
+                        <div id="loginError" class="error hidden"></div>
+                        
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <input type="email" class="form-input" id="loginEmail" placeholder=" " required>
+                                <label class="form-label" for="loginEmail">Email</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="password" class="form-input" id="loginPassword" placeholder=" " required>
+                                <label class="form-label" for="loginPassword">Password</label>
+                            </div>
+                            
+                            <div class="form-options">
+                                <div class="remember-me">
+                                    <input type="checkbox" id="rememberMe">
+                                    <label for="rememberMe">Remember me</label>
+                                </div>
+                                <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot password?</a>
+                            </div>
+                            
+                            <button type="submit" id="loginBtn">
+                                <span id="loginBtnText">Login</span>
+                                <div class="spinner hidden" id="loginSpinner"></div>
+                            </button>
+                        </form>
+                        
+                        <button class="slide-toggle" id="showRegisterBtn">Don't have an account? Register</button>
+                    </div>
+                    
+                    <!-- Register Card -->
+                    <div class="card-back">
+                        <h1>Create Account</h1>
+                        <h2>Join us today</h2>
+                        
+                        <div id="registerError" class="error hidden"></div>
+                        
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="registerName" placeholder=" " required>
+                                <label class="form-label" for="registerName">Full Name</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" class="form-input" id="registerEmail" placeholder=" " required>
+                                <label class="form-label" for="registerEmail">Email</label>
+                            </div>
+                            
+                            <div class="form-group phone-input-group">
+                                <select class="country-code-select" id="countryCode">
+                                    <option value="+880">+880 (Bangladesh)</option>
+                                    <option value="+91">+91 (India)</option>
+                                    <option value="+92">+92 (Pakistan)</option>
+                                    <option value="+62">+62 (Indonesia)</option>
+                                </select>
+                                <input type="tel" class="form-input phone-number" id="registerPhone" placeholder=" " required>
+                                <label class="form-label" for="registerPhone">Phone Number</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="gender-options">
+                                    <div class="gender-option">
+                                        <input type="radio" id="male" name="gender" value="male">
+                                        <label class="gender-label" for="male">Male</label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" id="female" name="gender" value="female">
+                                        <label class="gender-label" for="female">Female</label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" id="other" name="gender" value="other">
+                                        <label class="gender-label" for="other">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="date" class="form-input" id="dateOfBirth" placeholder=" " required>
+                                <label class="form-label" for="dateOfBirth">Date of Birth</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="password" class="form-input" id="registerPassword" placeholder=" " required>
+                                <label class="form-label" for="registerPassword">Password</label>
+                                <div class="password-strength" id="passwordStrength"></div>
+                                <div class="password-strength-text" id="passwordStrengthText"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="password" class="form-input" id="confirmPassword" placeholder=" " required>
+                                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                            </div>
+                            
+                            <div class="terms-container">
+                                <input type="checkbox" id="terms" class="terms-checkbox" required>
+                                <label class="terms-label" for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                            </div>
+                            
+                            <button type="submit" id="registerBtn">
+                                <span id="registerBtnText">Register</span>
+                                <div class="spinner hidden" id="registerSpinner"></div>
+                            </button>
+                        </form>
+                        
+                        <button class="slide-toggle" id="showLoginBtn">Already have an account? Login</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Container -->
+            <div class="card hidden" id="dashboardContainer">
+                <h1>Dashboard</h1>
+                <h2>Welcome back, <span id="dashboardUserName">User</span>!</h2>
+                
+                <div class="dashboard">
+                    <div class="dashboard-card" id="scientificCalcCard">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Scientific Calculator</h3>
+                        <p>Advanced calculations with scientific functions</p>
+                    </div>
+                    
+                    <div class="dashboard-card" id="unitConverterCard">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>Unit Converter</h3>
+                        <p>Convert between different units of measurement</p>
+                    </div>
+                    
+                    <div class="dashboard-card" id="bmiCalcCard">
+                        <i class="fas fa-weight"></i>
+                        <h3>BMI Calculator</h3>
+                        <p>Calculate your Body Mass Index</p>
+                    </div>
+                    
+                    <div class="dashboard-card" id="percentageCalcCard">
+                        <i class="fas fa-percent"></i>
+                        <h3>Percentage Calculator</h3>
+                        <p>Calculate percentages and values</p>
+                    </div>
+                    
+                    <div class="dashboard-card" id="ageCalcCard">
+                        <i class="fas fa-birthday-cake"></i>
+                        <h3>Age Calculator</h3>
+                        <p>Calculate your exact age and birthday countdown</p>
+                    </div>
+                    
+                    <div class="dashboard-card" id="historyCard">
+                        <i class="fas fa-history"></i>
+                        <h3>Calculation History</h3>
+                        <p>View your calculation history</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scientific Calculator Container -->
+            <div class="card hidden" id="scientificCalcContainer">
+                <h1>Scientific Calculator</h1>
+                
+                <div class="calc-container">
+                    <div class="calc-display">
+                        <div class="calc-expression" id="calcExpression"></div>
+                        <div class="calc-result" id="calcResult">0</div>
+                    </div>
+                    
+                    <div class="calc-buttons">
+                        <button class="calc-btn clear" id="calcClear">C</button>
+                        <button class="calc-btn function" id="calcBackspace">←</button>
+                        <button class="calc-btn function" id="calcPercent">%</button>
+                        <button class="calc-btn function" id="calcRecip">1/x</button>
+                        <button class="calc-btn function" id="calcSquare">x²</button>
+                        
+                        <button class="calc-btn function" id="calcSin">sin</button>
+                        <button class="calc-btn function" id="calcCos">cos</button>
+                        <button class="calc-btn function" id="calcTan">tan</button>
+                        <button class="calc-btn function" id="calcLog">log</button>
+                        <button class="calc-btn function" id="calcLn">ln</button>
+                        
+                        <button class="calc-btn function" id="calcSqrt">√</button>
+                        <button class="calc-btn operator" id="calcDivide">÷</button>
+                        <button class="calc-btn" id="calc7">7</button>
+                        <button class="calc-btn" id="calc8">8</button>
+                        <button class="calc-btn" id="calc9">9</button>
+                        
+                        <button class="calc-btn function" id="calcPow">x^y</button>
+                        <button class="calc-btn operator" id="calcMultiply">×</button>
+                        <button class="calc-btn" id="calc4">4</button>
+                        <button class="calc-btn" id="calc5">5</button>
+                        <button class="calc-btn" id="calc6">6</button>
+                        
+                        <button class="calc-btn function" id="calcFact">n!</button>
+                        <button class="calc-btn operator" id="calcSubtract">−</button>
+                        <button class="calc-btn" id="calc1">1</button>
+                        <button class="calc-btn" id="calc2">2</button>
+                        <button class="calc-btn" id="calc3">3</button>
+                        
+                        <button class="calc-btn function" id="calcPi">π</button>
+                        <button class="calc-btn operator" id="calcAdd">+</button>
+                        <button class="calc-btn zero" id="calc0">0</button>
+                        <button class="calc-btn" id="calcDecimal">.</button>
+                        <button class="calc-btn equals" id="calcEquals">=</button>
+                    </div>
+                    
+                    <div class="calc-history" id="calcHistory">
+                        <div class="empty-history">No calculation history yet</div>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromCalc">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Unit Converter Container -->
+            <div class="card hidden" id="unitConverterContainer">
+                <h1>Unit Converter</h1>
+                
+                <div class="converter-container">
+                    <div class="converter-header">
+                        <div class="converter-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="converter-title">Convert Units</div>
+                    </div>
+                    
+                    <div class="converter-row">
+                        <div class="converter-input">
+                            <input type="number" id="convertFromValue" placeholder="Enter value">
+                        </div>
+                        <div class="converter-select">
+                            <select id="convertFromUnit">
+                                <option value="meter">Meter</option>
+                                <option value="kilometer">Kilometer</option>
+                                <option value="centimeter">Centimeter</option>
+                                <option value="mile">Mile</option>
+                                <option value="yard">Yard</option>
+                                <option value="foot">Foot</option>
+                                <option value="inch">Inch</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="converter-arrow">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    
+                    <div class="converter-row">
+                        <div class="converter-input">
+                            <input type="number" id="convertToValue" readonly placeholder="Result">
+                        </div>
+                        <div class="converter-select">
+                            <select id="convertToUnit">
+                                <option value="meter">Meter</option>
+                                <option value="kilometer">Kilometer</option>
+                                <option value="centimeter">Centimeter</option>
+                                <option value="mile">Mile</option>
+                                <option value="yard">Yard</option>
+                                <option value="foot">Foot</option>
+                                <option value="inch">Inch</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="converter-button" id="convertBtn">Convert</button>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromConverter">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- BMI Calculator Container -->
+            <div class="card hidden" id="bmiCalcContainer">
+                <h1>BMI Calculator</h1>
+                
+                <div class="bmi-container">
+                    <div class="bmi-header">
+                        <div class="bmi-icon">
+                            <i class="fas fa-weight"></i>
+                        </div>
+                        <div class="bmi-title">Calculate Your BMI</div>
+                    </div>
+                    
+                    <div class="bmi-inputs">
+                        <div class="bmi-input-group">
+                            <input type="number" class="bmi-input" id="bmiWeight" placeholder=" " step="0.1" min="1" required>
+                            <label class="bmi-input-label" for="bmiWeight">Weight (kg)</label>
+                        </div>
+                        
+                        <div class="bmi-input-group">
+                            <input type="number" class="bmi-input" id="bmiHeight" placeholder=" " step="0.01" min="0.5" required>
+                            <label class="bmi-input-label" for="bmiHeight">Height (m)</label>
+                        </div>
+                    </div>
+                    
+                    <button class="bmi-button" id="calculateBmiBtn">Calculate BMI</button>
+                    
+                    <div class="bmi-result hidden" id="bmiResult">
+                        <div class="bmi-value" id="bmiValue">0</div>
+                        <div class="bmi-category" id="bmiCategory">Normal</div>
+                        <div class="bmi-description" id="bmiDescription">You have a normal body weight. Good job!</div>
+                        
+                        <div class="bmi-recommendation">
+                            <div class="bmi-ideal-range" id="bmiIdealRange">Ideal BMI range: 18.5 - 24.9</div>
+                            <div class="bmi-weight-recommendation" id="bmiWeightRecommendation">Your ideal weight range: 0 - 0 kg</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromBmi">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Percentage Calculator Container -->
+            <div class="card hidden" id="percentageCalcContainer">
+                <h1>Percentage Calculator</h1>
+                
+                <div class="converter-container">
+                    <div class="converter-header">
+                        <div class="converter-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="converter-title">Calculate Percentage</div>
+                    </div>
+                    
+                    <div class="converter-row">
+                        <div class="converter-input">
+                            <input type="number" id="percentageValue" placeholder="Enter value">
+                        </div>
+                        <div class="converter-select">
+                            <select id="percentageType">
+                                <option value="is-what-percent">is what percent of</option>
+                                <option value="what-is-percent">what is % of</option>
+                                <option value="percent-change">percent change</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="converter-row">
+                        <div class="converter-input">
+                            <input type="number" id="percentageOfValue" placeholder="Enter value">
+                        </div>
+                        <div class="converter-input" id="percentInputContainer" style="display:none;">
+                            <input type="number" id="percentagePercent" placeholder="Enter percent">
+                        </div>
+                    </div>
+                    
+                    <button class="converter-button" id="calculatePercentageBtn">Calculate</button>
+                    
+                    <div class="percentage-result hidden" id="percentageResult">
+                        <div class="percentage-value" id="percentageValueResult">0%</div>
+                        <div class="percentage-formula" id="percentageFormula">Formula: (value / total) × 100</div>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromPercentage">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Age Calculator Container -->
+            <div class="card hidden" id="ageCalcContainer">
+                <h1>Age Calculator</h1>
+                
+                <div class="converter-container">
+                    <div class="converter-header">
+                        <div class="converter-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <div class="converter-title">Calculate Your Age</div>
+                    </div>
+                    
+                    <div class="date-picker">
+                        <input type="date" class="date-input" id="birthDate" required>
+                    </div>
+                    
+                    <button class="converter-button" id="calculateAgeBtn">Calculate Age</button>
+                    
+                    <div class="age-result-container hidden" id="ageResultContainer">
+                        <div class="age-result-header">
+                            <div class="age-result-title">Your Age</div>
+                            <button class="age-result-copy" id="copyAgeResult">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                        </div>
+                        
+                        <div class="age-result-content">
+                            <div class="age-result-item">
+                                <div class="age-result-value" id="ageYears">0</div>
+                                <div class="age-result-label">Years</div>
+                            </div>
+                            
+                            <div class="age-result-item">
+                                <div class="age-result-value" id="ageMonths">0</div>
+                                <div class="age-result-label">Months</div>
+                            </div>
+                            
+                            <div class="age-result-item">
+                                <div class="age-result-value" id="ageDays">0</div>
+                                <div class="age-result-label">Days</div>
+                            </div>
+                            
+                            <div class="age-result-item">
+                                <div class="age-result-value" id="ageHours">0</div>
+                                <div class="age-result-label">Hours</div>
+                            </div>
+                        </div>
+                        
+                        <div class="age-result-details">
+                            <div class="age-result-details-title">Detailed Information</div>
+                            <div class="age-result-details-content" id="ageDetailsContent">
+                                You are 0 years, 0 months, and 0 days old.
+                                Your next birthday will be in 0 days.
+                            </div>
+                        </div>
+                        
+                        <div class="birthday-countdown">
+                            <div class="birthday-countdown-title">Next Birthday Countdown</div>
+                            <div class="birthday-countdown-value" id="birthdayCountdown">0 days</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromAge">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- History Container -->
+            <div class="card hidden" id="historyContainer">
+                <h1>Calculation History</h1>
+                
+                <div class="history-section">
+                    <div class="history-header">
+                        <div class="history-title">
+                            <i class="fas fa-history"></i>
+                            Your Calculation History
+                        </div>
+                        <button class="clear-history" id="clearHistoryBtn">Clear History</button>
+                    </div>
+                    
+                    <div class="history-list" id="historyList">
+                        <div class="empty-history">No calculation history yet</div>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromHistory">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Profile Container -->
+            <div class="card hidden" id="profileContainer">
+                <h1>User Profile</h1>
+                
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="https://picsum.photos/seed/avatar/120/120.jpg" alt="Profile Avatar" class="avatar-img" id="profileAvatar">
+                            <div class="avatar-status"></div>
+                        </div>
+                        
+                        <div class="profile-basic-info">
+                            <div class="profile-name" id="profileName">John Doe</div>
+                            <div class="profile-email" id="profileEmail">john.doe@example.com</div>
+                            <div class="profile-badges">
+                                <span class="profile-badge badge-active" id="profileStatusBadge">Active</span>
+                                <span class="profile-badge badge-admin" id="profileAdminBadge" style="display:none;">Admin</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-phone"></i>
+                                Phone
+                            </div>
+                            <div class="detail-value" id="profilePhone">+8801234567890</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-venus-mars"></i>
+                                Gender
+                            </div>
+                            <div class="detail-value" id="profileGender">Male</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-birthday-cake"></i>
+                                Date of Birth
+                            </div>
+                            <div class="detail-value" id="profileDateOfBirth">January 1, 1990</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-hourglass-half"></i>
+                                Age
+                            </div>
+                            <div class="detail-value" id="profileAge">25 years</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-sticky-note"></i>
+                                Special Notes
+                            </div>
+                            <div class="detail-value" id="profileSpecialNotes">No special notes</div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Member Since
+                            </div>
+                            <div class="detail-value" id="profileJoinDate">January 1, 2023</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button class="profile-action-btn primary" id="editProfileBtn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="profile-action-btn secondary" id="changePasswordBtn">
+                            <i class="fas fa-lock"></i> Change Password
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromProfile">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Edit Profile Container -->
+            <div class="card hidden" id="editProfileContainer">
+                <h1>Edit Profile</h1>
+                
+                <form id="editProfileForm">
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="editName" placeholder=" " required>
+                        <label class="form-label" for="editName">Full Name</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="tel" class="form-input" id="editPhone" placeholder=" " required>
+                        <label class="form-label" for="editPhone">Phone Number</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="gender-options">
+                            <div class="gender-option">
+                                <input type="radio" id="editMale" name="editGender" value="male">
+                                <label class="gender-label" for="editMale">Male</label>
+                            </div>
+                            <div class="gender-option">
+                                <input type="radio" id="editFemale" name="editGender" value="female">
+                                <label class="gender-label" for="editFemale">Female</label>
+                            </div>
+                            <div class="gender-option">
+                                <input type="radio" id="editOther" name="editGender" value="other">
+                                <label class="gender-label" for="editOther">Other</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="date" class="form-input" id="editDateOfBirth" placeholder=" " required>
+                        <label class="form-label" for="editDateOfBirth">Date of Birth</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea class="form-input" id="editSpecialNotes" placeholder=" " rows="3"></textarea>
+                        <label class="form-label" for="editSpecialNotes">Special Notes</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="cancelEditBtn">Cancel</button>
+                        <button type="submit" id="saveProfileBtn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Change Password Container -->
+            <div class="card hidden" id="changePasswordContainer">
+                <h1>Change Password</h1>
+                
+                <form id="changePasswordForm">
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="currentPassword" placeholder=" " required>
+                        <label class="form-label" for="currentPassword">Current Password</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="newPassword" placeholder=" " required>
+                        <label class="form-label" for="newPassword">New Password</label>
+                        <div class="password-strength" id="newPasswordStrength"></div>
+                        <div class="password-strength-text" id="newPasswordStrengthText"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="confirmPassword" placeholder=" " required>
+                        <label class="form-label" for="confirmPassword">Confirm New Password</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="cancelChangePasswordBtn">Cancel</button>
+                        <button type="submit" id="updatePasswordBtn">Update Password</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Settings Container -->
+            <div class="settings-container hidden" id="settingsContainer">
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="settings-title">Appearance</div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Theme</div>
+                            <div class="settings-description">Choose your preferred theme</div>
+                        </div>
+                        <select class="settings-select" id="themeSelect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="settings-title">Notifications</div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Email Notifications</div>
+                            <div class="settings-description">Receive email updates about your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="emailNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Calculation Reminders</div>
+                            <div class="settings-description">Get reminders to save your calculations</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="calcReminders" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="settings-title">Regional</div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Language</div>
+                            <div class="settings-description">Select your preferred language</div>
+                        </div>
+                        <select class="settings-select" id="languageSelect">
+                            <option value="en">English</option>
+                            <option value="bn">বাংলা</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Timezone</div>
+                            <div class="settings-description">Select your timezone</div>
+                        </div>
+                        <select class="settings-select" id="timezoneSelect">
+                            <option value="UTC">UTC</option>
+                            <option value="Asia/Dhaka">Asia/Dhaka</option>
+                            <option value="Asia/Kolkata">Asia/Kolkata</option>
+                            <option value="America/New_York">America/New_York</option>
+                            <option value="Europe/London">Europe/London</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <div class="settings-title">Data & Storage</div>
+                    </div>
+                    
+                    <div class="settings-item">
+                        <div>
+                            <div class="settings-label">Auto-save Calculations</div>
+                            <div class="settings-description">Automatically save your calculations</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoSave" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="settings-button" id="saveSettingsBtn">Save Settings</button>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromSettings">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Admin Panel Container -->
+            <div class="settings-container hidden" id="adminPanelContainer">
+                <div class="admin-header">
+                    <div class="admin-title">Admin Panel</div>
+                    <div class="admin-actions">
+                        <button class="secondary-btn" id="adminUsersBtn">User Management</button>
+                        <button class="secondary-btn" id="adminActivitiesBtn">Audit Trail</button>
+                    </div>
+                </div>
+                
+                <!-- User Management Section -->
+                <div class="settings-section" id="userManagementSection">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="settings-title">User Management</div>
+                    </div>
+                    
+                    <div class="search-filter">
+                        <input type="text" class="search-input" id="userSearch" placeholder="Search users...">
+                        <select class="filter-select" id="statusFilter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <select class="filter-select" id="roleFilter">
+                            <option value="">All Roles</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Gender</th>
+                                    <th>Date of Birth</th>
+                                    <th>Status</th>
+                                    <th>Role</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Users will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination" id="usersPagination">
+                        <!-- Pagination will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Audit Trail Section -->
+                <div class="settings-section hidden" id="auditTrailSection">
+                    <div class="settings-header">
+                        <div class="settings-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="settings-title">Audit Trail</div>
+                    </div>
+                    
+                    <div class="search-filter">
+                        <input type="text" class="search-input" id="activitySearch" placeholder="Search activities...">
+                        <input type="date" class="search-input" id="fromDate" placeholder="From date">
+                        <input type="date" class="search-input" id="toDate" placeholder="To date">
+                    </div>
+                    
+                    <div class="admin-table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activitiesTableBody">
+                                <!-- Activities will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination" id="activitiesPagination">
+                        <!-- Pagination will be loaded here -->
+                    </div>
+                </div>
+                
+                <button class="back-to-dashboard" id="backToDashboardFromAdmin">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Dashboard
+                </button>
+            </div>
+
+            <!-- Edit User Modal -->
+            <div class="modal hidden" id="editUserModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Edit User</h3>
+                        <button class="modal-close" id="closeEditUserModal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editUserForm">
+                            <input type="hidden" id="editUserId">
+                            
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="editUserFullName" placeholder=" " required>
+                                <label class="form-label" for="editUserFullName">Full Name</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="email" class="form-input" id="editUserEmail" placeholder=" " required>
+                                <label class="form-label" for="editUserEmail">Email</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" class="form-input" id="editUserPhone" placeholder=" " required>
+                                <label class="form-label" for="editUserPhone">Phone</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="gender-options">
+                                    <div class="gender-option">
+                                        <input type="radio" id="editUserMale" name="editUserGender" value="male">
+                                        <label class="gender-label" for="editUserMale">Male</label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" id="editUserFemale" name="editUserGender" value="female">
+                                        <label class="gender-label" for="editUserFemale">Female</label>
+                                    </div>
+                                    <div class="gender-option">
+                                        <input type="radio" id="editUserOther" name="editUserGender" value="other">
+                                        <label class="gender-label" for="editUserOther">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="date" class="form-input" id="editUserDateOfBirth" placeholder=" " required>
+                                <label class="form-label" for="editUserDateOfBirth">Date of Birth</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="editUserActive">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label for="editUserActive" style="margin-left: 10px;">Active Account</label>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="editUserAdmin">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label for="editUserAdmin" style="margin-left: 10px;">Admin Privileges</label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="secondary-btn" id="cancelEditUserBtn">Cancel</button>
+                                <button type="submit" id="saveUserBtn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2023 Emam's Calculator Suite. All rights reserved.</p>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle" id="notificationIcon"></i>
+        <span id="notificationMessage">Notification message</span>
+    </div>
+
+    <!-- Success Animation -->
+    <div class="success-animation" id="successAnimation">
+        <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="success-checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="success-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading...</div>
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Styles -->
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text);
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+    </style>
+
+    <script>
+        // API Base URL
+        const API_BASE = 'api.php';
+        
+        // DOM Elements
+        const authContainer = document.getElementById('authContainer');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const scientificCalcContainer = document.getElementById('scientificCalcContainer');
+        const unitConverterContainer = document.getElementById('unitConverterContainer');
+        const bmiCalcContainer = document.getElementById('bmiCalcContainer');
+        const percentageCalcContainer = document.getElementById('percentageCalcContainer');
+        const ageCalcContainer = document.getElementById('ageCalcContainer');
+        const historyContainer = document.getElementById('historyContainer');
+        const profileContainer = document.getElementById('profileContainer');
+        const editProfileContainer = document.getElementById('editProfileContainer');
+        const changePasswordContainer = document.getElementById('changePasswordContainer');
+        const settingsContainer = document.getElementById('settingsContainer');
+        const adminPanelContainer = document.getElementById('adminPanelContainer');
+        const editUserModal = document.getElementById('editUserModal');
+        
+        // User Elements
+        const userMenu = document.getElementById('userMenu');
+        const userBtn = document.getElementById('userBtn');
+        const userDropdown = document.getElementById('userDropdown');
+        const userName = document.getElementById('userName');
+        const dashboardUserName = document.getElementById('dashboardUserName');
+        
+        // User Dropdown Links
+        const profileLink = document.getElementById('profileLink');
+        const adminPanelLink = document.getElementById('adminPanelLink');
+        const settingsLink = document.getElementById('settingsLink');
+        const logoutLink = document.getElementById('logoutLink');
+        
+        // Auth Elements
+        const cardSlider = document.getElementById('cardSlider');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const loginError = document.getElementById('loginError');
+        const registerError = document.getElementById('registerError');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const registerBtnText = document.getElementById('registerBtnText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const registerSpinner = document.getElementById('registerSpinner');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        
+        // Registration Elements
+        const countryCode = document.getElementById('countryCode');
+        const dateOfBirth = document.getElementById('dateOfBirth');
+        const confirmPassword = document.getElementById('confirmPassword');
+        
+        // Profile Elements
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profilePhone = document.getElementById('profilePhone');
+        const profileGender = document.getElementById('profileGender');
+        const profileDateOfBirth = document.getElementById('profileDateOfBirth');
+        const profileAge = document.getElementById('profileAge');
+        const profileSpecialNotes = document.getElementById('profileSpecialNotes');
+        const profileJoinDate = document.getElementById('profileJoinDate');
+        const profileStatusBadge = document.getElementById('profileStatusBadge');
+        const profileAdminBadge = document.getElementById('profileAdminBadge');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const backToDashboardFromProfile = document.getElementById('backToDashboardFromProfile');
+        
+        // Edit Profile Elements
+        const editName = document.getElementById('editName');
+        const editPhone = document.getElementById('editPhone');
+        const editDateOfBirth = document.getElementById('editDateOfBirth');
+        const editSpecialNotes = document.getElementById('editSpecialNotes');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        
+        // Change Password Elements
+        const currentPassword = document.getElementById('currentPassword');
+        const newPassword = document.getElementById('newPassword');
+        const confirmPasswordChange = document.getElementById('confirmPassword');
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        const cancelChangePasswordBtn = document.getElementById('cancelChangePasswordBtn');
+        const updatePasswordBtn = document.getElementById('updatePasswordBtn');
+        
+        // Settings Elements
+        const themeSelect = document.getElementById('themeSelect');
+        const emailNotifications = document.getElementById('emailNotifications');
+        const calcReminders = document.getElementById('calcReminders');
+        const languageSelect = document.getElementById('languageSelect');
+        const timezoneSelect = document.getElementById('timezoneSelect');
+        const autoSave = document.getElementById('autoSave');
+        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+        const backToDashboardFromSettings = document.getElementById('backToDashboardFromSettings');
+        
+        // Admin Panel Elements
+        const adminUsersBtn = document.getElementById('adminUsersBtn');
+        const adminActivitiesBtn = document.getElementById('adminActivitiesBtn');
+        const userManagementSection = document.getElementById('userManagementSection');
+        const auditTrailSection = document.getElementById('auditTrailSection');
+        const userSearch = document.getElementById('userSearch');
+        const statusFilter = document.getElementById('statusFilter');
+        const roleFilter = document.getElementById('roleFilter');
+        const usersTableBody = document.getElementById('usersTableBody');
+        const usersPagination = document.getElementById('usersPagination');
+        const activitySearch = document.getElementById('activitySearch');
+        const fromDate = document.getElementById('fromDate');
+        const toDate = document.getElementById('toDate');
+        const activitiesTableBody = document.getElementById('activitiesTableBody');
+        const activitiesPagination = document.getElementById('activitiesPagination');
+        const backToDashboardFromAdmin = document.getElementById('backToDashboardFromAdmin');
+        
+        // Edit User Modal Elements
+        const editUserId = document.getElementById('editUserId');
+        const editUserFullName = document.getElementById('editUserFullName');
+        const editUserEmail = document.getElementById('editUserEmail');
+        const editUserPhone = document.getElementById('editUserPhone');
+        const editUserDateOfBirth = document.getElementById('editUserDateOfBirth');
+        const editUserActive = document.getElementById('editUserActive');
+        const editUserAdmin = document.getElementById('editUserAdmin');
+        const editUserForm = document.getElementById('editUserForm');
+        const closeEditUserModal = document.getElementById('closeEditUserModal');
+        const cancelEditUserBtn = document.getElementById('cancelEditUserBtn');
+        const saveUserBtn = document.getElementById('saveUserBtn');
+        
+        // Dashboard Cards
+        const scientificCalcCard = document.getElementById('scientificCalcCard');
+        const unitConverterCard = document.getElementById('unitConverterCard');
+        const bmiCalcCard = document.getElementById('bmiCalcCard');
+        const percentageCalcCard = document.getElementById('percentageCalcCard');
+        const ageCalcCard = document.getElementById('ageCalcCard');
+        const historyCard = document.getElementById('historyCard');
+        
+        // Back to Dashboard Buttons
+        const backToDashboardFromCalc = document.getElementById('backToDashboardFromCalc');
+        const backToDashboardFromConverter = document.getElementById('backToDashboardFromConverter');
+        const backToDashboardFromBmi = document.getElementById('backToDashboardFromBmi');
+        const backToDashboardFromPercentage = document.getElementById('backToDashboardFromPercentage');
+        const backToDashboardFromAge = document.getElementById('backToDashboardFromAge');
+        const backToDashboardFromHistory = document.getElementById('backToDashboardFromHistory');
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Notification
+        const notification = document.getElementById('notification');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationMessage = document.getElementById('notificationMessage');
+        
+        // Success Animation
+        const successAnimation = document.getElementById('successAnimation');
+        
+        // Loading Overlay
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
+        // Calculator Variables
+        let calcExpression = '';
+        let calcResult = 0;
+        let calcHistory = [];
+        
+        // Current User
+        let currentUser = null;
+        let isAdminUser = false;
+        
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            checkAuthStatus();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initialize theme
+            initializeTheme();
+            
+            // Load settings if user is logged in
+            if (currentUser) {
+                loadSettings();
+            }
+        });
+        
+        // Check Authentication Status
+        function checkAuthStatus() {
+            fetch(`${API_BASE}?endpoint=get_user`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        currentUser = data.user;
+                        isAdminUser = currentUser.is_admin === 1;
+                        showDashboard();
+                    } else {
+                        showAuth();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking auth status:', error);
+                    showAuth();
+                });
+        }
+        
+        // Show Authentication Screen
+        function showAuth() {
+            hideAllContainers();
+            authContainer.classList.remove('hidden');
+            userMenu.style.display = 'none';
+        }
+        
+        // Show Dashboard
+        function showDashboard() {
+            hideAllContainers();
+            dashboardContainer.classList.remove('hidden');
+            userMenu.style.display = 'block';
+            
+            // Update user info
+            userName.textContent = currentUser.full_name;
+            dashboardUserName.textContent = currentUser.full_name;
+            
+            // Show admin panel link if user is admin
+            if (isAdminUser) {
+                adminPanelLink.style.display = 'flex';
+            } else {
+                adminPanelLink.style.display = 'none';
+            }
+            
+            // Load profile data
+            loadProfileData();
+        }
+        
+        // Hide All Containers
+        function hideAllContainers() {
+            authContainer.classList.add('hidden');
+            dashboardContainer.classList.add('hidden');
+            scientificCalcContainer.classList.add('hidden');
+            unitConverterContainer.classList.add('hidden');
+            bmiCalcContainer.classList.add('hidden');
+            percentageCalcContainer.classList.add('hidden');
+            ageCalcContainer.classList.add('hidden');
+            historyContainer.classList.add('hidden');
+            profileContainer.classList.add('hidden');
+            editProfileContainer.classList.add('hidden');
+            changePasswordContainer.classList.add('hidden');
+            settingsContainer.classList.add('hidden');
+            adminPanelContainer.classList.add('hidden');
+            editUserModal.classList.add('hidden');
+        }
+        
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Auth Form Toggle
+            showRegisterBtn.addEventListener('click', function() {
+                cardSlider.classList.add('slide-right');
+            });
+            
+            showLoginBtn.addEventListener('click', function() {
+                cardSlider.classList.remove('slide-right');
+            });
+            
+            // User Dropdown
+            userBtn.addEventListener('click', function() {
+                userDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!userBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+                    userDropdown.classList.remove('show');
+                }
+            });
+            
+            // Login Form
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+            
+            // Register Form
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleRegister();
+            });
+            
+            // Password Strength Indicator
+            const registerPassword = document.getElementById('registerPassword');
+            registerPassword.addEventListener('input', function() {
+                checkPasswordStrength(this.value);
+            });
+            
+            const newPasswordInput = document.getElementById('newPassword');
+            newPasswordInput.addEventListener('input', function() {
+                checkPasswordStrength(this.value, true);
+            });
+            
+            // Profile Link
+            profileLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showProfile();
+            });
+            
+            // Admin Panel Link
+            adminPanelLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showAdminPanel();
+            });
+            
+            // Settings Link
+            settingsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSettings();
+            });
+            
+            // Logout Link
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleLogout();
+            });
+            
+            // Dashboard Cards
+            scientificCalcCard.addEventListener('click', function() {
+                showScientificCalculator();
+            });
+            
+            unitConverterCard.addEventListener('click', function() {
+                showUnitConverter();
+            });
+            
+            bmiCalcCard.addEventListener('click', function() {
+                showBmiCalculator();
+            });
+            
+            percentageCalcCard.addEventListener('click', function() {
+                showPercentageCalculator();
+            });
+            
+            ageCalcCard.addEventListener('click', function() {
+                showAgeCalculator();
+            });
+            
+            historyCard.addEventListener('click', function() {
+                showHistory();
+            });
+            
+            // Back to Dashboard Buttons
+            backToDashboardFromCalc.addEventListener('click', showDashboard);
+            backToDashboardFromConverter.addEventListener('click', showDashboard);
+            backToDashboardFromBmi.addEventListener('click', showDashboard);
+            backToDashboardFromPercentage.addEventListener('click', showDashboard);
+            backToDashboardFromAge.addEventListener('click', showDashboard);
+            backToDashboardFromHistory.addEventListener('click', showDashboard);
+            backToDashboardFromProfile.addEventListener('click', showDashboard);
+            backToDashboardFromSettings.addEventListener('click', showDashboard);
+            backToDashboardFromAdmin.addEventListener('click', showDashboard);
+            
+            // Profile Actions
+            editProfileBtn.addEventListener('click', showEditProfile);
+            changePasswordBtn.addEventListener('click', showChangePassword);
+            
+            // Edit Profile Form
+            editProfileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleUpdateProfile();
+            });
+            
+            cancelEditBtn.addEventListener('click', function() {
+                showProfile();
+            });
+            
+            // Change Password Form
+            changePasswordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleChangePassword();
+            });
+            
+            cancelChangePasswordBtn.addEventListener('click', function() {
+                showProfile();
+            });
+            
+            // Settings
+            saveSettingsBtn.addEventListener('click', handleSaveSettings);
+            
+            // Admin Panel
+            adminUsersBtn.addEventListener('click', function() {
+                userManagementSection.classList.remove('hidden');
+                auditTrailSection.classList.add('hidden');
+                loadUsers();
+            });
+            
+            adminActivitiesBtn.addEventListener('click', function() {
+                userManagementSection.classList.add('hidden');
+                auditTrailSection.classList.remove('hidden');
+                loadActivities();
+            });
+            
+            // User Search and Filters
+            userSearch.addEventListener('input', debounce(loadUsers, 300));
+            statusFilter.addEventListener('change', loadUsers);
+            roleFilter.addEventListener('change', loadUsers);
+            
+            // Activity Search and Filters
+            activitySearch.addEventListener('input', debounce(loadActivities, 300));
+            fromDate.addEventListener('change', loadActivities);
+            toDate.addEventListener('change', loadActivities);
+            
+            // Edit User Modal
+            closeEditUserModal.addEventListener('click', function() {
+                editUserModal.classList.add('hidden');
+            });
+            
+            cancelEditUserBtn.addEventListener('click', function() {
+                editUserModal.classList.add('hidden');
+            });
+            
+            editUserForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleUpdateUser();
+            });
+            
+            // Theme Toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Calculator Buttons
+            setupCalculatorButtons();
+            
+            // Unit Converter
+            setupUnitConverter();
+            
+            // BMI Calculator
+            setupBmiCalculator();
+            
+            // Percentage Calculator
+            setupPercentageCalculator();
+            
+            // Age Calculator
+            setupAgeCalculator();
+            
+            // History
+            setupHistory();
+            
+            // Avatar Upload
+            setupAvatarUpload();
+        }
+        
+        // Handle Login
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const remember = document.getElementById('rememberMe').checked;
+            
+            // Show loading
+            loginBtnText.textContent = 'Logging in...';
+            loginSpinner.classList.remove('hidden');
+            loginBtn.disabled = true;
+            
+            // Clear error
+            loginError.textContent = '';
+            loginError.classList.add('hidden');
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password,
+                    remember: remember
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                loginBtnText.textContent = 'Login';
+                loginSpinner.classList.add('hidden');
+                loginBtn.disabled = false;
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    isAdminUser = currentUser.is_admin === 1;
+                    showNotification('Login successful', 'success');
+                    showSuccessAnimation();
+                    setTimeout(() => {
+                        showDashboard();
+                    }, 1500);
+                } else {
+                    loginError.textContent = data.message;
+                    loginError.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                loginBtnText.textContent = 'Login';
+                loginSpinner.classList.add('hidden');
+                loginBtn.disabled = false;
+                
+                console.error('Login error:', error);
+                loginError.textContent = 'An error occurred. Please try again.';
+                loginError.classList.remove('hidden');
+            });
+        }
+        
+        // Handle Register
+        function handleRegister() {
+            const fullName = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+            const dob = document.getElementById('dateOfBirth').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Validate passwords match
+            if (password !== confirmPass) {
+                registerError.textContent = 'Passwords do not match';
+                registerError.classList.remove('hidden');
+                return;
+            }
+            
+            if (!terms) {
+                registerError.textContent = 'You must agree to the Terms and Conditions';
+                registerError.classList.remove('hidden');
+                return;
+            }
+            
+            // Show loading
+            registerBtnText.textContent = 'Creating account...';
+            registerSpinner.classList.remove('hidden');
+            registerBtn.disabled = true;
+            
+            // Clear error
+            registerError.textContent = '';
+            registerError.classList.add('hidden');
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: fullName,
+                    email: email,
+                    country_code: countryCode.value,
+                    phone: phone,
+                    gender: gender,
+                    date_of_birth: dob,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                registerBtnText.textContent = 'Register';
+                registerSpinner.classList.add('hidden');
+                registerBtn.disabled = false;
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    isAdminUser = currentUser.is_admin === 1;
+                    showNotification('Registration successful', 'success');
+                    showSuccessAnimation();
+                    setTimeout(() => {
+                        showDashboard();
+                    }, 1500);
+                } else {
+                    registerError.textContent = data.message;
+                    registerError.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                registerBtnText.textContent = 'Register';
+                registerSpinner.classList.add('hidden');
+                registerBtn.disabled = false;
+                
+                console.error('Registration error:', error);
+                registerError.textContent = 'An error occurred. Please try again.';
+                registerError.classList.remove('hidden');
+            });
+        }
+        
+        // Handle Logout
+        function handleLogout() {
+            fetch(`${API_BASE}?endpoint=logout`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentUser = null;
+                    isAdminUser = false;
+                    showNotification('Logout successful', 'success');
+                    showAuth();
+                } else {
+                    showNotification('Logout failed', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Logout error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Show Profile
+        function showProfile() {
+            hideAllContainers();
+            profileContainer.classList.remove('hidden');
+            loadProfileData();
+        }
+        
+        // Load Profile Data
+        function loadProfileData() {
+            if (!currentUser) return;
+            
+            profileName.textContent = currentUser.full_name;
+            profileEmail.textContent = currentUser.email;
+            profilePhone.textContent = currentUser.phone || 'Not provided';
+            profileGender.textContent = currentUser.gender || 'Not provided';
+            profileSpecialNotes.textContent = currentUser.special_notes || 'No special notes';
+            
+            // Format date of birth
+            if (currentUser.date_of_birth) {
+                const dob = new Date(currentUser.date_of_birth);
+                profileDateOfBirth.textContent = dob.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Calculate age
+                const today = new Date();
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                    age--;
+                }
+                profileAge.textContent = age + ' years';
+            } else {
+                profileDateOfBirth.textContent = 'Not provided';
+                profileAge.textContent = 'Not calculated';
+            }
+            
+            // Format join date
+            if (currentUser.created_at) {
+                const joinDate = new Date(currentUser.created_at);
+                profileJoinDate.textContent = joinDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            } else {
+                profileJoinDate.textContent = 'Unknown';
+            }
+            
+            // Update status badge
+            if (currentUser.is_active) {
+                profileStatusBadge.textContent = 'Active';
+                profileStatusBadge.className = 'profile-badge badge-active';
+            } else {
+                profileStatusBadge.textContent = 'Inactive';
+                profileStatusBadge.className = 'profile-badge badge-inactive';
+            }
+            
+            // Update admin badge
+            if (currentUser.is_admin) {
+                profileAdminBadge.style.display = 'inline-block';
+            } else {
+                profileAdminBadge.style.display = 'none';
+            }
+            
+            // Load avatar if available
+            if (currentUser.avatar) {
+                profileAvatar.src = UPLOAD_PATH + currentUser.avatar;
+            }
+        }
+        
+        // Show Edit Profile
+        function showEditProfile() {
+            hideAllContainers();
+            editProfileContainer.classList.remove('hidden');
+            
+            // Pre-fill form with current data
+            editName.value = currentUser.full_name;
+            editPhone.value = currentUser.phone || '';
+            editSpecialNotes.value = currentUser.special_notes || '';
+            
+            // Set date of birth
+            if (currentUser.date_of_birth) {
+                editDateOfBirth.value = currentUser.date_of_birth;
+            }
+            
+            // Set gender
+            if (currentUser.gender) {
+                document.getElementById(`edit${currentUser.gender.charAt(0).toUpperCase() + currentUser.gender.slice(1)}`).checked = true;
+            }
+        }
+        
+        // Handle Update Profile
+        function handleUpdateProfile() {
+            const fullName = editName.value;
+            const phone = editPhone.value;
+            const gender = document.querySelector('input[name="editGender"]:checked')?.value || '';
+            const dateOfBirth = editDateOfBirth.value;
+            const specialNotes = editSpecialNotes.value;
+            
+            // Show loading
+            saveProfileBtn.innerHTML = '<div class="spinner"></div> Saving...';
+            saveProfileBtn.disabled = true;
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=update_profile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: fullName,
+                    phone: phone,
+                    gender: gender,
+                    date_of_birth: dateOfBirth,
+                    special_notes: specialNotes
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                saveProfileBtn.textContent = 'Save Changes';
+                saveProfileBtn.disabled = false;
+                
+                if (data.success) {
+                    currentUser = data.user;
+                    showNotification('Profile updated successfully', 'success');
+                    showProfile();
+                } else {
+                    showNotification(data.message || 'Failed to update profile', 'error');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                saveProfileBtn.textContent = 'Save Changes';
+                saveProfileBtn.disabled = false;
+                
+                console.error('Update profile error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Show Change Password
+        function showChangePassword() {
+            hideAllContainers();
+            changePasswordContainer.classList.remove('hidden');
+            
+            // Clear form
+            currentPassword.value = '';
+            newPassword.value = '';
+            confirmPasswordChange.value = '';
+            document.getElementById('newPasswordStrength').className = 'password-strength';
+            document.getElementById('newPasswordStrengthText').textContent = '';
+        }
+        
+        // Handle Change Password
+        function handleChangePassword() {
+            const currentPass = currentPassword.value;
+            const newPass = newPassword.value;
+            const confirmPass = confirmPasswordChange.value;
+            
+            if (newPass !== confirmPass) {
+                showNotification('Passwords do not match', 'error');
+                return;
+            }
+            
+            // Show loading
+            updatePasswordBtn.innerHTML = '<div class="spinner"></div> Updating...';
+            updatePasswordBtn.disabled = true;
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=change_password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    current_password: currentPass,
+                    new_password: newPass
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                updatePasswordBtn.textContent = 'Update Password';
+                updatePasswordBtn.disabled = false;
+                
+                if (data.success) {
+                    showNotification('Password changed successfully', 'success');
+                    showProfile();
+                } else {
+                    showNotification(data.message || 'Failed to change password', 'error');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                updatePasswordBtn.textContent = 'Update Password';
+                updatePasswordBtn.disabled = false;
+                
+                console.error('Change password error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Show Settings
+        function showSettings() {
+            hideAllContainers();
+            settingsContainer.classList.remove('hidden');
+            loadSettings();
+        }
+        
+        // Load Settings
+        function loadSettings() {
+            fetch(`${API_BASE}?endpoint=get_settings`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const settings = data.settings;
+                        themeSelect.value = settings.theme || 'light';
+                        emailNotifications.checked = settings.notifications === 1;
+                        calcReminders.checked = settings.notifications === 1;
+                        languageSelect.value = settings.language || 'en';
+                        timezoneSelect.value = settings.timezone || 'UTC';
+                        autoSave.checked = settings.auto_save === 1;
+                    }
+                })
+                .catch(error => {
+                    console.error('Load settings error:', error);
+                });
+        }
+        
+        // Handle Save Settings
+        function handleSaveSettings() {
+            const settings = {
+                theme: themeSelect.value,
+                notifications: emailNotifications.checked ? 1 : 0,
+                language: languageSelect.value,
+                timezone: timezoneSelect.value,
+                auto_save: autoSave.checked ? 1 : 0
+            };
+            
+            // Show loading
+            saveSettingsBtn.innerHTML = '<div class="spinner"></div> Saving...';
+            saveSettingsBtn.disabled = true;
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=update_settings`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settings)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                saveSettingsBtn.textContent = 'Save Settings';
+                saveSettingsBtn.disabled = false;
+                
+                if (data.success) {
+                    showNotification('Settings saved successfully', 'success');
+                    
+                    // Apply theme if changed
+                    if (settings.theme !== document.body.getAttribute('data-theme')) {
+                        applyTheme(settings.theme);
+                    }
+                } else {
+                    showNotification(data.message || 'Failed to save settings', 'error');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                saveSettingsBtn.textContent = 'Save Settings';
+                saveSettingsBtn.disabled = false;
+                
+                console.error('Save settings error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Show Admin Panel
+        function showAdminPanel() {
+            hideAllContainers();
+            adminPanelContainer.classList.remove('hidden');
+            
+            // Default to user management
+            userManagementSection.classList.remove('hidden');
+            auditTrailSection.classList.add('hidden');
+            loadUsers();
+        }
+        
+        // Load Users
+        function loadUsers(page = 1) {
+            const search = userSearch.value;
+            const status = statusFilter.value;
+            const role = roleFilter.value;
+            
+            let url = `${API_BASE}?endpoint=get_users&page=${page}`;
+            if (search) url += `&search=${search}`;
+            if (status) url += `&status=${status}`;
+            if (role) url += `&role=${role}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderUsersTable(data.users);
+                        renderUsersPagination(data.pagination);
+                    } else {
+                        showNotification(data.message || 'Failed to load users', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Load users error:', error);
+                    showNotification('An error occurred. Please try again.', 'error');
+                });
+        }
+        
+        // Render Users Table
+        function renderUsersTable(users) {
+            usersTableBody.innerHTML = '';
+            
+            if (users.length === 0) {
+                usersTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No users found</td></tr>';
+                return;
+            }
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                
+                const statusBadge = user.is_active ? 
+                    '<span class="status-badge active">Active</span>' : 
+                    '<span class="status-badge inactive">Inactive</span>';
+                
+                const roleBadge = user.is_admin ? 
+                    '<span class="status-badge active">Admin</span>' : 
+                    '<span class="status-badge inactive">User</span>';
+                
+                // Format date of birth
+                let dobFormatted = '-';
+                if (user.date_of_birth) {
+                    const dob = new Date(user.date_of_birth);
+                    dobFormatted = dob.toLocaleDateString();
+                }
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.full_name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone || '-'}</td>
+                    <td>${user.gender || '-'}</td>
+                    <td>${dobFormatted}</td>
+                    <td>${statusBadge}</td>
+                    <td>${roleBadge}</td>
+                    <td>
+                        <button class="action-btn edit-user" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete delete-user" data-id="${user.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                
+                usersTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.edit-user').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-id');
+                    showEditUserModal(userId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-user').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this user?')) {
+                        deleteUser(userId);
+                    }
+                });
+            });
+        }
+        
+        // Render Users Pagination
+        function renderUsersPagination(pagination) {
+            usersPagination.innerHTML = '';
+            
+            if (pagination.pages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.textContent = 'Previous';
+            prevBtn.disabled = pagination.page === 1;
+            prevBtn.addEventListener('click', () => loadUsers(pagination.page - 1));
+            usersPagination.appendChild(prevBtn);
+            
+            // Page numbers
+            for (let i = 1; i <= pagination.pages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                if (i === pagination.page) {
+                    pageBtn.classList.add('active');
+                }
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => loadUsers(i));
+                usersPagination.appendChild(pageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.textContent = 'Next';
+            nextBtn.disabled = pagination.page === pagination.pages;
+            nextBtn.addEventListener('click', () => loadUsers(pagination.page + 1));
+            usersPagination.appendChild(nextBtn);
+        }
+        
+        // Show Edit User Modal
+        function showEditUserModal(userId) {
+            // Find user data
+            fetch(`${API_BASE}?endpoint=get_users&search=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.users.length > 0) {
+                        const user = data.users[0];
+                        
+                        // Fill form with user data
+                        editUserId.value = user.id;
+                        editUserFullName.value = user.full_name;
+                        editUserEmail.value = user.email;
+                        editUserPhone.value = user.phone || '';
+                        editUserDateOfBirth.value = user.date_of_birth || '';
+                        editUserActive.checked = user.is_active === 1;
+                        editUserAdmin.checked = user.is_admin === 1;
+                        
+                        // Set gender
+                        if (user.gender) {
+                            document.getElementById(`editUser${user.gender.charAt(0).toUpperCase() + user.gender.slice(1)}`).checked = true;
+                        }
+                        
+                        // Show modal
+                        editUserModal.classList.remove('hidden');
+                    } else {
+                        showNotification('User not found', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Get user error:', error);
+                    showNotification('An error occurred. Please try again.', 'error');
+                });
+        }
+        
+        // Handle Update User
+        function handleUpdateUser() {
+            const userId = editUserId.value;
+            const fullName = editUserFullName.value;
+            const email = editUserEmail.value;
+            const phone = editUserPhone.value;
+            const gender = document.querySelector('input[name="editUserGender"]:checked')?.value || '';
+            const dateOfBirth = editUserDateOfBirth.value;
+            const isActive = editUserActive.checked;
+            const isAdmin = editUserAdmin.checked;
+            
+            // Show loading
+            saveUserBtn.innerHTML = '<div class="spinner"></div> Saving...';
+            saveUserBtn.disabled = true;
+            
+            // Make API request
+            fetch(`${API_BASE}?endpoint=update_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    full_name: fullName,
+                    email: email,
+                    phone: phone,
+                    gender: gender,
+                    date_of_birth: dateOfBirth,
+                    is_active: isActive,
+                    is_admin: isAdmin
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading
+                saveUserBtn.textContent = 'Save Changes';
+                saveUserBtn.disabled = false;
+                
+                if (data.success) {
+                    showNotification('User updated successfully', 'success');
+                    editUserModal.classList.add('hidden');
+                    loadUsers(); // Reload users table
+                } else {
+                    showNotification(data.message || 'Failed to update user', 'error');
+                }
+            })
+            .catch(error => {
+                // Hide loading
+                saveUserBtn.textContent = 'Save Changes';
+                saveUserBtn.disabled = false;
+                
+                console.error('Update user error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Delete User
+        function deleteUser(userId) {
+            fetch(`${API_BASE}?endpoint=delete_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('User deleted successfully', 'success');
+                    loadUsers(); // Reload users table
+                } else {
+                    showNotification(data.message || 'Failed to delete user', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Delete user error:', error);
+                showNotification('An error occurred. Please try again.', 'error');
+            });
+        }
+        
+        // Load Activities
+        function loadActivities(page = 1) {
+            const search = activitySearch.value;
+            const from = fromDate.value;
+            const to = toDate.value;
+            
+            let url = `${API_BASE}?endpoint=get_activities&page=${page}`;
+            if (search) url += `&user=${search}`;
+            if (from) url += `&from_date=${from}`;
+            if (to) url += `&to_date=${to}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderActivitiesTable(data.activities);
+                        renderActivitiesPagination(data.pagination);
+                    } else {
+                        showNotification(data.message || 'Failed to load activities', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Load activities error:', error);
+                    showNotification('An error occurred. Please try again.', 'error');
+                });
+        }
+        
+        // Render Activities Table
+        function renderActivitiesTable(activities) {
+            activitiesTableBody.innerHTML = '';
+            
+            if (activities.length === 0) {
+                activitiesTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No activities found</td></tr>';
+                return;
+            }
+            
+            activities.forEach(activity => {
+                const row = document.createElement('tr');
+                
+                // Format date
+                const date = new Date(activity.created_at);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                
+                row.innerHTML = `
+                    <td>${activity.id}</td>
+                    <td>${activity.full_name || 'Unknown'}</td>
+                    <td>${activity.action}</td>
+                    <td>${activity.details || '-'}</td>
+                    <td>${activity.ip_address}</td>
+                    <td>${formattedDate}</td>
+                `;
+                
+                activitiesTableBody.appendChild(row);
+            });
+        }
+        
+        // Render Activities Pagination
+        function renderActivitiesPagination(pagination) {
+            activitiesPagination.innerHTML = '';
+            
+            if (pagination.pages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.textContent = 'Previous';
+            prevBtn.disabled = pagination.page === 1;
+            prevBtn.addEventListener('click', () => loadActivities(pagination.page - 1));
+            activitiesPagination.appendChild(prevBtn);
+            
+            // Page numbers
+            for (let i = 1; i <= pagination.pages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                if (i === pagination.page) {
+                    pageBtn.classList.add('active');
+                }
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => loadActivities(i));
+                activitiesPagination.appendChild(pageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.textContent = 'Next';
+            nextBtn.disabled = pagination.page === pagination.pages;
+            nextBtn.addEventListener('click', () => loadActivities(pagination.page + 1));
+            activitiesPagination.appendChild(nextBtn);
+        }
+        
+        // Show Scientific Calculator
+        function showScientificCalculator() {
+            hideAllContainers();
+            scientificCalcContainer.classList.remove('hidden');
+            loadCalculatorHistory();
+        }
+        
+        // Show Unit Converter
+        function showUnitConverter() {
+            hideAllContainers();
+            unitConverterContainer.classList.remove('hidden');
+        }
+        
+        // Show BMI Calculator
+        function showBmiCalculator() {
+            hideAllContainers();
+            bmiCalcContainer.classList.remove('hidden');
+        }
+        
+        // Show Percentage Calculator
+        function showPercentageCalculator() {
+            hideAllContainers();
+            percentageCalcContainer.classList.remove('hidden');
+        }
+        
+        // Show Age Calculator
+        function showAgeCalculator() {
+            hideAllContainers();
+            ageCalcContainer.classList.remove('hidden');
+        }
+        
+        // Show History
+        function showHistory() {
+            hideAllContainers();
+            historyContainer.classList.remove('hidden');
+            loadHistory();
+        }
+        
+        // Setup Calculator Buttons
+        function setupCalculatorButtons() {
+            // Get all calculator buttons
+            const calcButtons = document.querySelectorAll('.calc-btn');
+            
+            // Add click event to each button
+            calcButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const buttonId = this.id;
+                    handleCalculatorButton(buttonId);
+                });
+            });
+        }
+        
+        // Handle Calculator Button
+        function handleCalculatorButton(buttonId) {
+            switch (buttonId) {
+                case 'calcClear':
+                    calcExpression = '';
+                    calcResult = 0;
+                    updateCalculatorDisplay();
+                    break;
+                    
+                case 'calcBackspace':
+                    calcExpression = calcExpression.slice(0, -1);
+                    updateCalculatorDisplay();
+                    break;
+                    
+                case 'calcEquals':
+                    calculateResult();
+                    break;
+                    
+                case 'calcPercent':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression += '/100';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcRecip':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = '1/(' + calcExpression + ')';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcSquare':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.pow(' + calcExpression + ',2)';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcSin':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.sin(' + calcExpression + ' * Math.PI/180)';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcCos':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.cos(' + calcExpression + ' * Math.PI/180)';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcTan':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.tan(' + calcExpression + ' * Math.PI/180)';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcLog':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.log10(' + calcExpression + ')';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcLn':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.log(' + calcExpression + ')';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcSqrt':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression = 'Math.sqrt(' + calcExpression + ')';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcPow':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        calcExpression += '^';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                case 'calcFact':
+                    if (calcExpression && !isNaN(calcExpression.slice(-1))) {
+                        const num = parseInt(calcExpression);
+                        if (num >= 0 && num <= 170) {
+                            calcExpression = factorial(num);
+                            updateCalculatorDisplay();
+                        }
+                    }
+                    break;
+                    
+                case 'calcPi':
+                    if (calcExpression === '' || isNaN(calcExpression.slice(-1))) {
+                        calcExpression += 'Math.PI';
+                        updateCalculatorDisplay();
+                    }
+                    break;
+                    
+                default:
+                    // Handle number and operator buttons
+                    const buttonText = this.textContent;
+                    
+                    // Replace display symbols with JavaScript operators
+                    let operator = buttonText;
+                    if (buttonText === '÷') operator = '/';
+                    if (buttonText === '×') operator = '*';
+                    if (buttonText === '−') operator = '-';
+                    if (buttonText === '+') operator = '+';
+                    
+                    // Handle power operator
+                    if (buttonText === 'x^y') {
+                        operator = '^';
+                    }
+                    
+                    calcExpression += operator;
+                    updateCalculatorDisplay();
+                    break;
+            }
+        }
+        
+        // Calculate Result
+        function calculateResult() {
+            if (!calcExpression) return;
+            
+            try {
+                // Replace power operator with Math.pow
+                let expression = calcExpression.replace(/(\d+)\^(\d+)/g, 'Math.pow($1,$2)');
+                
+                // Evaluate the expression
+                calcResult = eval(expression);
+                
+                // Add to history
+                addToCalculatorHistory(calcExpression, calcResult);
+                
+                // Log calculator usage
+                logCalculatorUsage('Scientific Calculator', calcExpression + ' = ' + calcResult, calcResult);
+                
+                // Update display
+                updateCalculatorDisplay();
+                
+                // Reset expression for next calculation
+                calcExpression = calcResult.toString();
+            } catch (error) {
+                calcResult = 'Error';
+                updateCalculatorDisplay();
+                calcExpression = '';
+            }
+        }
+        
+        // Update Calculator Display
+        function updateCalculatorDisplay() {
+            document.getElementById('calcExpression').textContent = calcExpression;
+            document.getElementById('calcResult').textContent = calcResult;
+        }
+        
+        // Add to Calculator History
+        function addToCalculatorHistory(expression, result) {
+            calcHistory.unshift({
+                expression: expression,
+                result: result,
+                timestamp: new Date()
+            });
+            
+            // Keep only the last 10 calculations
+            if (calcHistory.length > 10) {
+                calcHistory.pop();
+            }
+            
+            // Update history display
+            updateCalculatorHistory();
+        }
+        
+        // Update Calculator History
+        function updateCalculatorHistory() {
+            const historyContainer = document.getElementById('calcHistory');
+            
+            if (calcHistory.length === 0) {
+                historyContainer.innerHTML = '<div class="empty-history">No calculation history yet</div>';
+                return;
+            }
+            
+            historyContainer.innerHTML = '';
+            
+            calcHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'calc-history-item';
+                historyItem.textContent = `${item.expression} = ${item.result}`;
+                
+                historyItem.addEventListener('click', function() {
+                    calcExpression = item.result.toString();
+                    updateCalculatorDisplay();
+                });
+                
+                historyContainer.appendChild(historyItem);
+            });
+        }
+        
+        // Load Calculator History
+        function loadCalculatorHistory() {
+            fetch(`${API_BASE}?endpoint=get_calculator_usage`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.calculations.length > 0) {
+                        calcHistory = data.calculations.map(item => ({
+                            expression: item.operation,
+                            result: item.result,
+                            timestamp: new Date(item.created_at)
+                        }));
+                        updateCalculatorHistory();
+                    }
+                })
+                .catch(error => {
+                    console.error('Load calculator history error:', error);
+                });
+        }
+        
+        // Setup Unit Converter
+        function setupUnitConverter() {
+            const convertBtn = document.getElementById('convertBtn');
+            const convertFromUnit = document.getElementById('convertFromUnit');
+            const convertToUnit = document.getElementById('convertToUnit');
+            const convertFromValue = document.getElementById('convertFromValue');
+            
+            convertBtn.addEventListener('click', function() {
+                const fromValue = parseFloat(convertFromValue.value);
+                const fromUnit = convertFromUnit.value;
+                const toUnit = convertToUnit.value;
+                
+                if (isNaN(fromValue)) {
+                    showNotification('Please enter a valid number', 'error');
+                    return;
+                }
+                
+                // Convert to meters first (base unit)
+                let meters;
+                switch (fromUnit) {
+                    case 'kilometer':
+                        meters = fromValue * 1000;
+                        break;
+                    case 'meter':
+                        meters = fromValue;
+                        break;
+                    case 'centimeter':
+                        meters = fromValue / 100;
+                        break;
+                    case 'mile':
+                        meters = fromValue * 1609.34;
+                        break;
+                    case 'yard':
+                        meters = fromValue * 0.9144;
+                        break;
+                    case 'foot':
+                        meters = fromValue * 0.3048;
+                        break;
+                    case 'inch':
+                        meters = fromValue * 0.0254;
+                        break;
+                    default:
+                        meters = fromValue;
+                }
+                
+                // Convert from meters to target unit
+                let result;
+                switch (toUnit) {
+                    case 'kilometer':
+                        result = meters / 1000;
+                        break;
+                    case 'meter':
+                        result = meters;
+                        break;
+                    case 'centimeter':
+                        result = meters * 100;
+                        break;
+                    case 'mile':
+                        result = meters / 1609.34;
+                        break;
+                    case 'yard':
+                        result = meters / 0.9144;
+                        break;
+                    case 'foot':
+                        result = meters / 0.3048;
+                        break;
+                    case 'inch':
+                        result = meters / 0.0254;
+                        break;
+                    default:
+                        result = meters;
+                }
+                
+                // Display result
+                document.getElementById('convertToValue').value = result.toFixed(4);
+                
+                // Log calculator usage
+                logCalculatorUsage('Unit Converter', `${fromValue} ${fromUnit} = ${result.toFixed(4)} ${toUnit}`, result);
+            });
+        }
+        
+        // Setup BMI Calculator
+        function setupBmiCalculator() {
+            const calculateBmiBtn = document.getElementById('calculateBmiBtn');
+            
+            calculateBmiBtn.addEventListener('click', function() {
+                const weight = parseFloat(document.getElementById('bmiWeight').value);
+                const height = parseFloat(document.getElementById('bmiHeight').value);
+                
+                if (isNaN(weight) || isNaN(height)) {
+                    showNotification('Please enter valid weight and height', 'error');
+                    return;
+                }
+                
+                // Calculate BMI
+                const bmi = weight / (height * height);
+                
+                // Determine category
+                let category, description;
+                if (bmi < 18.5) {
+                    category = 'Underweight';
+                    description = 'You are underweight. Consider consulting a healthcare provider.';
+                } else if (bmi < 25) {
+                    category = 'Normal';
+                    description = 'You have a normal body weight. Good job!';
+                } else if (bmi < 30) {
+                    category = 'Overweight';
+                    description = 'You are overweight. Consider a balanced diet and exercise.';
+                } else {
+                    category = 'Obese';
+                    description = 'You are in the obese range. Please consult a healthcare provider.';
+                }
+                
+                // Calculate ideal weight range
+                const minIdealWeight = 18.5 * height * height;
+                const maxIdealWeight = 24.9 * height * height;
+                
+                // Display results
+                document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+                document.getElementById('bmiCategory').textContent = category;
+                document.getElementById('bmiDescription').textContent = description;
+                document.getElementById('bmiIdealRange').textContent = 'Ideal BMI range: 18.5 - 24.9';
+                document.getElementById('bmiWeightRecommendation').textContent = 
+                    `Your ideal weight range: ${minIdealWeight.toFixed(1)} - ${maxIdealWeight.toFixed(1)} kg`;
+                
+                // Show result section
+                document.getElementById('bmiResult').classList.remove('hidden');
+                
+                // Log calculator usage
+                logCalculatorUsage('BMI Calculator', `BMI: ${bmi.toFixed(1)} (${category})`, bmi);
+            });
+        }
+        
+        // Setup Percentage Calculator
+        function setupPercentageCalculator() {
+            const calculatePercentageBtn = document.getElementById('calculatePercentageBtn');
+            const percentageType = document.getElementById('percentageType');
+            const percentInputContainer = document.getElementById('percentInputContainer');
+            
+            percentageType.addEventListener('change', function() {
+                if (this.value === 'what-is-percent') {
+                    percentInputContainer.style.display = 'block';
+                } else {
+                    percentInputContainer.style.display = 'none';
+                }
+            });
+            
+            calculatePercentageBtn.addEventListener('click', function() {
+                const type = percentageType.value;
+                const value1 = parseFloat(document.getElementById('percentageValue').value);
+                const value2 = parseFloat(document.getElementById('percentageOfValue').value);
+                const percent = parseFloat(document.getElementById('percentagePercent').value);
+                
+                if (isNaN(value1) || isNaN(value2) || (type === 'what-is-percent' && isNaN(percent))) {
+                    showNotification('Please enter valid values', 'error');
+                    return;
+                }
+                
+                let result, formula;
+                
+                switch (type) {
+                    case 'is-what-percent':
+                        result = (value1 / value2) * 100;
+                        formula = `(${value1} / ${value2}) × 100 = ${result.toFixed(2)}%`;
+                        break;
+                        
+                    case 'what-is-percent':
+                        result = (percent / 100) * value2;
+                        formula = `${percent}% of ${value2} = ${result.toFixed(2)}`;
+                        break;
+                        
+                    case 'percent-change':
+                        result = ((value2 - value1) / value1) * 100;
+                        formula = `((${value2} - ${value1}) / ${value1}) × 100 = ${result.toFixed(2)}%`;
+                        break;
+                }
+                
+                // Display result
+                document.getElementById('percentageValueResult').textContent = 
+                    type === 'what-is-percent' ? result.toFixed(2) : result.toFixed(2) + '%';
+                document.getElementById('percentageFormula').textContent = formula;
+                
+                // Show result section
+                document.getElementById('percentageResult').classList.remove('hidden');
+                
+                // Log calculator usage
+                logCalculatorUsage('Percentage Calculator', formula, result);
+            });
+        }
+        
+        // Setup Age Calculator
+        function setupAgeCalculator() {
+            const calculateAgeBtn = document.getElementById('calculateAgeBtn');
+            const copyAgeResult = document.getElementById('copyAgeResult');
+            
+            calculateAgeBtn.addEventListener('click', function() {
+                const birthDate = new Date(document.getElementById('birthDate').value);
+                
+                if (isNaN(birthDate.getTime())) {
+                    showNotification('Please select a valid birth date', 'error');
+                    return;
+                }
+                
+                const today = new Date();
+                
+                // Calculate age
+                let years = today.getFullYear() - birthDate.getFullYear();
+                let months = today.getMonth() - birthDate.getMonth();
+                let days = today.getDate() - birthDate.getDate();
+                
+                // Adjust for negative values
+                if (days < 0) {
+                    months--;
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                    days += lastMonth.getDate();
+                }
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                // Calculate total days, hours, minutes, seconds
+                const totalDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+                const totalHours = totalDays * 24;
+                
+                // Calculate next birthday
+                const nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+                if (nextBirthday < today) {
+                    nextBirthday.setFullYear(today.getFullYear() + 1);
+                }
+                const daysUntilBirthday = Math.floor((nextBirthday - today) / (1000 * 60 * 60 * 24));
+                
+                // Display results
+                document.getElementById('ageYears').textContent = years;
+                document.getElementById('ageMonths').textContent = months;
+                document.getElementById('ageDays').textContent = days;
+                document.getElementById('ageHours').textContent = totalHours.toLocaleString();
+                
+                // Format detailed information
+                const ageDetails = `You are ${years} years, ${months} months, and ${days} days old.
+Total days: ${totalDays.toLocaleString()}
+Total hours: ${totalHours.toLocaleString()}
+Your next birthday will be in ${daysUntilBirthday} days.`;
+                
+                document.getElementById('ageDetailsContent').textContent = ageDetails;
+                document.getElementById('birthdayCountdown').textContent = 
+                    daysUntilBirthday === 0 ? 'Today is your birthday! 🎉' : `${daysUntilBirthday} days`;
+                
+                // Show result section
+                document.getElementById('ageResultContainer').classList.remove('hidden');
+                
+                // Log calculator usage
+                logCalculatorUsage('Age Calculator', `Age: ${years} years, ${months} months, ${days} days`, years);
+            });
+            
+            copyAgeResult.addEventListener('click', function() {
+                const ageDetails = document.getElementById('ageDetailsContent').textContent;
+                navigator.clipboard.writeText(ageDetails)
+                    .then(() => {
+                        showNotification('Age details copied to clipboard', 'success');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        showNotification('Failed to copy to clipboard', 'error');
+                    });
+            });
+        }
+        
+        // Setup History
+        function setupHistory() {
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            
+            clearHistoryBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear your calculation history?')) {
+                    calcHistory = [];
+                    updateCalculatorHistory();
+                    showNotification('History cleared', 'success');
+                }
+            });
+        }
+        
+        // Load History
+        function loadHistory() {
+            const historyList = document.getElementById('historyList');
+            
+            fetch(`${API_BASE}?endpoint=get_calculator_usage`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.calculations.length > 0) {
+                        historyList.innerHTML = '';
+                        
+                        data.calculations.forEach(item => {
+                            const historyItem = document.createElement('div');
+                            historyItem.className = 'history-item';
+                            
+                            const date = new Date(item.created_at);
+                            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                            
+                            historyItem.innerHTML = `
+                                <div class="history-type">${item.calculator_type}</div>
+                                <div class="history-content">${item.operation} = ${item.result}</div>
+                                <div class="history-time">${formattedDate}</div>
+                            `;
+                            
+                            historyList.appendChild(historyItem);
+                        });
+                    } else {
+                        historyList.innerHTML = '<div class="empty-history">No calculation history yet</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Load history error:', error);
+                    historyList.innerHTML = '<div class="empty-history">Failed to load history</div>';
+                });
+        }
+        
+        // Setup Avatar Upload
+        function setupAvatarUpload() {
+            const uploadAvatarBtn = document.getElementById('uploadAvatarBtn');
+            const avatarUpload = document.getElementById('avatarUpload');
+            
+            uploadAvatarBtn.addEventListener('click', function() {
+                avatarUpload.click();
+            });
+            
+            avatarUpload.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const formData = new FormData();
+                    formData.append('avatar', this.files[0]);
+                    
+                    // Show loading
+                    uploadAvatarBtn.innerHTML = '<div class="spinner"></div> Uploading...';
+                    uploadAvatarBtn.disabled = true;
+                    
+                    fetch(`${API_BASE}?endpoint=upload_avatar`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Hide loading
+                        uploadAvatarBtn.textContent = 'Change Avatar';
+                        uploadAvatarBtn.disabled = false;
+                        
+                        if (data.success) {
+                            // Update avatar
+                            profileAvatar.src = UPLOAD_PATH + data.filename;
+                            currentUser.avatar = data.filename;
+                            showNotification('Avatar uploaded successfully', 'success');
+                        } else {
+                            showNotification(data.message || 'Failed to upload avatar', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        // Hide loading
+                        uploadAvatarBtn.textContent = 'Change Avatar';
+                        uploadAvatarBtn.disabled = false;
+                        
+                        console.error('Upload avatar error:', error);
+                        showNotification('An error occurred. Please try again.', 'error');
+                    });
+                }
+            });
+        }
+        
+        // Check Password Strength
+        function checkPasswordStrength(password, isNew = false) {
+            const strengthElement = isNew ? 
+                document.getElementById('newPasswordStrength') : 
+                document.getElementById('passwordStrength');
+            const textElement = isNew ? 
+                document.getElementById('newPasswordStrengthText') : 
+                document.getElementById('passwordStrengthText');
+            
+            let strength = 0;
+            
+            // Check length
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            
+            // Check for different character types
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            // Update UI
+            strengthElement.className = 'password-strength';
+            textElement.textContent = '';
+            
+            if (password.length > 0) {
+                if (strength <= 2) {
+                    strengthElement.classList.add('weak');
+                    textElement.textContent = 'Weak password';
+                } else if (strength <= 4) {
+                    strengthElement.classList.add('medium');
+                    textElement.textContent = 'Medium strength';
+                } else {
+                    strengthElement.classList.add('strong');
+                    textElement.textContent = 'Strong password';
+                }
+            }
+        }
+        
+        // Factorial Function
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            return n * factorial(n - 1);
+        }
+        
+        // Log Calculator Usage
+        function logCalculatorUsage(calculatorType, operation, result) {
+            fetch(`${API_BASE}?endpoint=log_calculator_usage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    calculator_type: calculatorType,
+                    operation: operation,
+                    result: result
+                })
+            })
+            .catch(error => {
+                console.error('Log calculator usage error:', error);
+            });
+        }
+        
+        // Theme Functions
+        function initializeTheme() {
+            // Check for saved theme preference or default to light
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+        }
+        
+        function applyTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            
+            // Update theme icon
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+            
+            // Save theme preference
+            localStorage.setItem('theme', theme);
+        }
+        
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            
+            // Update settings if user is logged in
+            if (currentUser) {
+                themeSelect.value = newTheme;
+                handleSaveSettings();
+            }
+        }
+        
+        // Notification Function
+        function showNotification(message, type = 'info') {
+            notificationMessage.textContent = message;
+            notification.className = 'notification show ' + type;
+            
+            // Update icon based on type
+            if (type === 'success') {
+                notificationIcon.className = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                notificationIcon.className = 'fas fa-exclamation-circle';
+            } else if (type === 'warning') {
+                notificationIcon.className = 'fas fa-exclamation-triangle';
+            } else {
+                notificationIcon.className = 'fas fa-info-circle';
+            }
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Show Success Animation
+        function showSuccessAnimation() {
+            successAnimation.classList.add('show');
+            
+            // Hide after 2 seconds
+            setTimeout(() => {
+                successAnimation.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Debounce Function
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+    </script>
+</body>
+</html>
